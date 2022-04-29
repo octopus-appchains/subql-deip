@@ -1,0 +1,28 @@
+specVersion: 0.2.0
+name: subql-deip
+version: 0.0.4
+description: This project can be use as a starting po...
+repository: https://github.com/octopus-appchains/subql-deip.git
+schema:
+  file: ./schema.graphql
+network:
+  endpoint: >-
+    wss://gateway.mainnet.octopus.network/deip/b9e1ipeh3ejw2znrb4s2xd4tlf6gynq0
+  genesisHash: "0x70a95d71b8af03226b90d2efa28f29ed6ec2dd923e698fbb7a9778c98ef25a5b"
+dataSources:
+  - kind: substrate/Runtime
+    startBlock: 1
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleBlock
+          kind: substrate/BlockHandler
+        - handler: handleEvent
+          kind: substrate/EventHandler
+        - handler: handleCall
+          kind: substrate/CallHandler
+        - handler: systemTokenTransferEvent
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Transfer
